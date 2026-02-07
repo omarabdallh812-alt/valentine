@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine Surprise ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #ff4d6d, #ff85a1);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 22px;
+      padding: 35px 25px;
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      animation: fadeIn 1.2s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 { margin-bottom: 14px; font-size: 30px; }
+    p { font-size: 18px; line-height: 1.9; }
+
+    input {
+      width: 100%; padding: 14px; border-radius: 14px; border: none; outline: none;
+      font-size: 16px; margin-bottom: 18px; text-align: center;
+    }
+
+    button {
+      width: 100%; padding: 14px; border-radius: 14px; border: none;
+      font-size: 18px; background: #ff1e56; color: #fff; cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #e60045; }
+
+    .error { color: #ffe3ec; margin-top: 10px; display: none; font-weight: 600; }
+
+    /* Floating emojis */
+    .floating { position: absolute; bottom: -50px; font-size: 30px; animation: floatUp 10s linear infinite; opacity: 0.85; }
+    .floating:nth-child(1){left:8%;animation-duration:9s}
+    .floating:nth-child(2){left:22%;animation-duration:11s}
+    .floating:nth-child(3){left:36%;animation-duration:8s}
+    .floating:nth-child(4){left:52%;animation-duration:12s}
+    .floating:nth-child(5){left:68%;animation-duration:10s}
+    .floating:nth-child(6){left:84%;animation-duration:13s}
+
+    @keyframes floatUp { from{transform:translateY(0) rotate(0);opacity:0} 20%{opacity:1} to{transform:translateY(-110vh) rotate(360deg);opacity:0} }
+    @keyframes fadeIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+
+    .pulse { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
+
+    /* Moon */
+    .moon { position:absolute; top:-30px; right:-30px; font-size:64px; animation: moonFloat 6s ease-in-out infinite; }
+    @keyframes moonFloat { 0%{transform:translateY(0)} 50%{transform:translateY(12px)} 100%{transform:translateY(0)} }
+
+    /* Hearts burst */
+    .heart { position:absolute; color:#ff2f7d; font-size:18px; animation: heartUp 2.2s ease-out forwards; }
+    @keyframes heartUp { from{transform:translateY(0) scale(1);opacity:1} to{transform:translateY(-80px) scale(1.4);opacity:0} }
+
+    /* Typing */
+    .typing { border-right: 2px solid rgba(255,255,255,.8); padding-right:4px; }
+
+    audio { display:none; }
+
+    .music-btn{
+      position:fixed; bottom:20px; right:20px; z-index:5;
+      background:#ff2f7d; color:#fff; border:none; border-radius:50px;
+      padding:10px 16px; font-size:14px; cursor:pointer;
+      box-shadow:0 8px 20px rgba(0,0,0,.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating decorations -->
+  <div class="floating">❤️</div>
+  <div class="floating">🍓</div>
+  <div class="floating">🍌</div>
+  <div class="floating">💖</div>
+  <div class="floating">🍓</div>
+  <div class="floating">💘</div>
+
+  <!-- Calm foreign music -->
+  <audio id="bgMusic" autoplay loop>
+    
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5d2d6b3b28.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-btn" onclick="toggleMusic()">🔊 Music</button>
+
+  <!-- Page 1 -->
+  <div class="card" id="loginPage">
+    <h1 class="pulse">🔐 Secret Password</h1>
+    <p>Enter the secret code to unlock your Valentine surprise 💝</p>
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="checkPassword()">Unlock 💕</button>
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <!-- Page 2 -->
+  <div class="card" id="messagePage" style="display:none;">
+    <div class="moon">🌙</div>
+    <h1 class="pulse">Happy Valentine’s Day, <span id="name">Malak</span> 🍓❤️</h1>
+    <p id="typed" class="typing"></p>
+  </div>
+
+  <script>
+    const wrongMessages = [
+      'ركزي يا ملق 😂',
+      ' الموزة غبية 🍌',
+      'فكري يا فراولاية 🍓'
+    ];
+
+    function checkPassword(){
+      const pass = document.getElementById('password').value;
+      const error = document.getElementById('errorMsg');
+      if(pass === '3111'){
+        document.getElementById('loginPage').style.display='none';
+        document.getElementById('messagePage').style.display='block';
+        startTyping();
+        heartsBurst();
+      } else {
+        error.style.display='block';
+        error.textContent = wrongMessages[Math.floor(Math.random()*wrongMessages.length)];
+      }
+    }
+
+    const message = "You are our moon. I never imagined when we first met that you would turn out to be this sweet, and you're beautiful just the way you are without changing anything about yourself.\n\nThank you for making my life sweeter just by being in it";
+    let i=0;
+    function startTyping(){
+      const el = document.getElementById('typed');
+      if(i < message.length){
+        el.innerHTML += message[i] === '\n' ? '<br>' : message[i];
+        i++; setTimeout(startTyping, 40);
+      } else { el.classList.remove('typing'); }
+    }
+
+    function toggleMusic(){
+      const m=document.getElementById('bgMusic');
+      if(m.paused){ m.play(); } else { m.pause(); }
+    }
+
+    function heartsBurst(){
+      const name = document.getElementById('name');
+      const rect = name.getBoundingClientRect();
+      for(let k=0;k<14;k++){
+        const h=document.createElement('div'); h.className='heart'; h.textContent='❤️';
+        h.style.left = (rect.left + rect.width/2 + (Math.random()*40-20))+'px';
+        h.style.top = (rect.top + window.scrollY)+'px';
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),2200);
+      }
+    }
+  </script>
+</body>
+</html>
